@@ -4,7 +4,7 @@ const mongoose = require("mongoose");
 
 const getAllJobs = async (req, res) => {
     try{
-        const jobs = await Job.sort({ createdAt: -1 });
+        const jobs = await Job.find().sort({ createdAt: -1 });
         res.status(200).json(jobs);
     }catch(error){
         res.status(500).json({ message: "Could not get jobs"})
