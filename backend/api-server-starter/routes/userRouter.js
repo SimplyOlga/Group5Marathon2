@@ -9,9 +9,11 @@ const {
 const requireAuth = require('../middleware/requireAuth')
 const router = express.Router()
 
-router.use(requireAuth)
 router.post('/login', loginUser)
 router.post('/signup', signupUser)
+
+router.use(requireAuth)
+
 router.get('/me', getUser)
 
 module.exports = router 

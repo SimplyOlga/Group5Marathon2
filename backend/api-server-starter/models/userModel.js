@@ -17,7 +17,7 @@ const userSchema = mongoose.Schema(
       required: true,
       enum: ["Male", "Female", "Other"]
     },
-    date_of_birth: { type: Date, required: true },
+    date_of_birth: { type: String, required: true },
     address: {
           street: { type: String, required: true }, // Street address
           city: { type: String, required: true }, // City
@@ -44,9 +44,9 @@ userSchema.statics.signup = async function (name, email, password, phone_number,
   if (!validator.isMobilePhone(phone_number)) {
     throw Error("Invalid Phone number");
   }
-  if (!validator.isDate(date_of_birth)) {
-    throw Error("Invalid date of birth");
-  }
+//   if (!validator.isDate(date_of_birth)) {
+//     throw Error("Invalid date of birth");
+//   }
   
 
   const userExists = await this.findOne({ email });
