@@ -23,6 +23,9 @@ const Navbar = () => {
                 <NavLink to='/' className={linkClass}>
                   Home
                 </NavLink>
+                 <NavLink to='/signup' className={linkClass}>
+                  Sign up
+                </NavLink>
                 <NavLink to='/jobs' className={linkClass}>
                   Jobs
                 </NavLink>
