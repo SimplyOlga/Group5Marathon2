@@ -6,6 +6,12 @@ const SignUpPage = ({ signupSubmit }) => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [phoneNumber, setPhoneNumber ] = useState('');
+  const [gender, setGender] = useState('NotStated');
+  const [dateOfBirth, setDateOfBirth] = useState('');
+  const [ street, setStreet] = useState('');
+  const [ city, setCity ] = useState('');
+  const [ zipcode, setZipcode ] = useState('');
   
 
   const navigate = useNavigate();
@@ -16,7 +22,7 @@ const SignUpPage = ({ signupSubmit }) => {
     const newUser = {
       name,
       email,
-      password
+      password,
     };
 
     signupSubmit(newUser);
@@ -50,6 +56,7 @@ const SignUpPage = ({ signupSubmit }) => {
                 onChange={(e) => setName(e.target.value)}
               />
             </div>
+            
 
             <div className='mb-4'>
               <label
@@ -84,16 +91,124 @@ const SignUpPage = ({ signupSubmit }) => {
                 onChange={(e) => setPassword(e.target.value)}
               />
             </div>
+            <div className='mb-4'>
+              <label className='block text-gray-700 font-bold mb-2'>
+                Phone number
+              </label>
+              <input
+                type='tel'
+                id='phoneNumber'
+                name='phoneNumber'
+                className='border rounded w-full py-2 px-3 mb-2'
+                placeholder='Phone  Number'
+                required
+                value={phoneNumber}
+                onChange={(e) => setPhoneNumber(e.target.value)}
+              />
+            </div>
+
+             <div className='mb-4'>
+              <label
+                htmlFor='type'
+                className='block text-gray-700 font-bold mb-2'
+              >
+                Gender
+              </label>
+              <select
+                id='gender'
+                name='gender'
+                className='border rounded w-full py-2 px-3'
+                required
+                value={gender}
+                onChange={(e) => setGender(e.target.value)}
+              >
+                <option value='Male'>Male</option>
+                <option value='Female'>Female</option>
+                <option value='NotSpecified'>Not specified</option>
+                
+              </select>
+            </div>
+            <div className='mb-4'>
+              <label className='block text-gray-700 font-bold mb-2'>
+                Date of Birth
+              </label>
+              <input
+                type='date'
+                id='dateOfBirth'
+                name='dateOfBirth'
+                className='border rounded w-full py-2 px-3 mb-2'
+                required
+                value={dateOfBirth}
+                onChange={(e) => setDateOfBirth(e.target.value)}
+              />
+            </div>
+
+            <div className='mb-4'>
+              <label
+                htmlFor='contact_email'
+                className='block text-gray-700 font-bold mb-2'
+              >
+                City
+              </label>
+              <input
+                type='city'
+                id='city'
+                name='city'
+                className='border rounded w-full py-2 px-3'
+                placeholder='City'
+                required
+                value={city}
+                onChange={(e) => setCity(e.target.value)}
+              />
+            </div>
+            <div className='mb-4'>
+              <label
+                htmlFor='contact_email'
+                className='block text-gray-700 font-bold mb-2'
+              >
+                Street
+              </label>
+              <input
+                type='street'
+                id='street'
+                name='street'
+                className='border rounded w-full py-2 px-3'
+                placeholder='Street'
+                required
+                value={street}
+                onChange={(e) => setStreet(e.target.value)}
+              />
+            </div>
+            
+            
+            <div className='mb-4'>
+              <label
+                htmlFor='contact_email'
+                className='block text-gray-700 font-bold mb-2'
+              >
+                Zipcode
+              </label>
+              <input
+                type='zipcode'
+                id='zipcode'
+                name='zipcode'
+                className='border rounded w-full py-2 px-3'
+                placeholder='Zipcode'
+                required
+                value={zipcode}
+                onChange={(e) => setZipcode(e.target.value)}
+              />
+            </div>
 
 
             
             <div>
-              <button
-                className='bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-4 rounded-full w-full focus:outline-none focus:shadow-outline'
-                type='submit'
-              >
+              <Link to="/">
+                
+               
+              
                 Sign Up
-              </button>
+              </Link>
             </div>
           </form>
         </div>
