@@ -1,3 +1,18 @@
+# Iteration 4.3
+3. Explain this code and write the explanation
+
+    jobSchema.set('toJSON', {
+    virtuals: true,
+    transform: (doc, ret) => {
+        ret.id = ret._id;
+        delete ret._id;
+        delete ret.__v;
+        return ret;
+    }
+    });
+
+- This snippet of code makes it so that the retrieved json field names of _id and _ _v is returned cleaner (_id turned to id and __v getting fully deleted) to better read for the frontend. 
+
 # React Jobs Project
 
 
