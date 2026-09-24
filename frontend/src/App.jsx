@@ -1,5 +1,6 @@
 import {
   Route,
+  Navigate,
   createBrowserRouter,
   createRoutesFromElements,
   RouterProvider,
@@ -12,7 +13,8 @@ import JobPage, { jobLoader } from './pages/JobPage';
 import AddJobPage from './pages/AddJobPage';
 import EditJobPage from './pages/EditJobPage';
 import Login from './pages/Login';
-import SignUp from './pages/SignUp';
+import Signup from './pages/SignUp'
+import { useState } from 'react';
 
 const App = () => {
   // Add New Job
@@ -47,6 +49,11 @@ const App = () => {
     return;
   };
 
+  const [isAuthenticated, setIsAuthenticated] = useState(() => {
+      const user = JSON.parse(localStorage.getItem("user"));
+      return user && user.token ? true : false;
+    });
+
   const router = createBrowserRouter(
     createRoutesFromElements(
       
@@ -54,12 +61,13 @@ const App = () => {
         
         <Route index element={<HomePage />} />
         <Route path='/jobs' element={<JobsPage />} />
-        <Route path='/add-job' element={<AddJobPage addJobSubmit={addJob} />} />
-        <Route path='/login' element={<Login />} />
+        <Route path='/add-job' element={isAuthenticated ? <AddJobPage addJobSubmit={addJob} /> : <Navigate to="/login" />} />
+
         <Route
-          path='/edit-job/:id'
-          element={<EditJobPage updateJobSubmit={updateJob} />}
-          loader={jobLoader}
+          path="/edit-job/:id"
+          element={
+            isAuthenticated ? <EditJobPage updateJobSubmit={updateJob}/> : <Navigate to="/login" />
+          }
         />
         <Route
           path='/jobs/:id'
@@ -67,7 +75,26 @@ const App = () => {
           loader={jobLoader}
         />
         <Route path='*' element={<NotFoundPage />} />
-        <Route path="signup" element={<SignUp />} />
+        <Route
+          path="/signup"
+          element={
+            isAuthenticated ? (
+              <Navigate to="/" />
+            ) : (
+              <Signup setIsAuthenticated={setIsAuthenticated} />
+            )
+          }
+        />
+        <Route
+          path="/login"
+          element={
+            isAuthenticated ? (
+              <Navigate to="/" />
+            ) : (
+              <Login setIsAuthenticated={setIsAuthenticated} />
+            )
+          }
+        />
       </Route>
     )
   );

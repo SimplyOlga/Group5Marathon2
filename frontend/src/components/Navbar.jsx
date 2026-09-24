@@ -1,7 +1,12 @@
 import { NavLink } from 'react-router-dom';
 import logo from '../assets/images/logo.png';
 
-const Navbar = () => {
+const Navbar = ({ isAuthenticated, setIsAuthenticated }) => {
+  const handleClick = () => {
+    setIsAuthenticated(false);
+    localStorage.removeItem("user");
+  };
+
   const linkClass = ({ isActive }) =>
     isActive
       ? 'bg-black text-white hover:bg-gray-900 hover:text-white rounded-md px-3 py-2'
@@ -19,23 +24,37 @@ const Navbar = () => {
               </span>
             </NavLink>
             <div className='md:ml-auto'>
+
               <div className='flex space-x-2'>
                 <NavLink to='/' className={linkClass}>
                   Home
                 </NavLink>
-                 <NavLink to='/signup' className={linkClass}>
-                  Sign up
-                </NavLink>
+                 
                 <NavLink to='/jobs' className={linkClass}>
                   Jobs
                 </NavLink>
-                <NavLink to='/add-job' className={linkClass}>
-                  Add Job
-                </NavLink>
-                <NavLink to='/login' className={linkClass}>
-                  Login
-                </NavLink>
+                
+                {isAuthenticated && (
+                  <div>
+                    <NavLink to='/add-job' className={linkClass}>Add Job</NavLink>
+                    <span>{JSON.parse(localStorage.getItem("user")).email}</span>
+                    <button onClick={handleClick}>Log out</button>
+                  </div>
+                )}
+
+                {!isAuthenticated && (
+                  <div>
+                    <NavLink to='/login' className={linkClass}>
+                      Login
+                    </NavLink>
+                    <NavLink to='/signup' className={linkClass}>
+                      Sign up
+                    </NavLink>
+                  </div>
+                )}
+                
               </div>
+
             </div>
           </div>
         </div>

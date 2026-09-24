@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
-function Login() {
+const Login = ( {setIsAuthenticated} ) => {
     const navigate = useNavigate();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -9,7 +9,7 @@ function Login() {
 
   async function handleSubmit(e) {
     e.preventDefault();
-    setError('');
+    setError(null);
 
     const response = await fetch("/api/users/login", {
         method: "POST",
@@ -76,7 +76,6 @@ function Login() {
 
                 <button
                   type="submit"
-                  variant="primary"
                   className='bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-4 rounded-full w-full focus:outline-none focus:shadow-outline'
                 >
                   Login
@@ -96,7 +95,6 @@ function Login() {
                   <button
                     className='bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-4 rounded-full w-full focus:outline-none focus:shadow-outline'
                     type="button"
-                    variant="secondary"
                   >
                     Sign up
                   </button>
