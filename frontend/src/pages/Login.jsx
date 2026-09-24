@@ -9,7 +9,7 @@ function Login() {
 
   async function handleSubmit(e) {
     e.preventDefault();
-    setMessage('');
+    setError('');
 
     const response = await fetch("/api/users/login", {
         method: "POST",
