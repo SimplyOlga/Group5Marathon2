@@ -137,13 +137,3 @@ This made the authentication pages part of the application's normal navigation f
 * Connected authentication pages to the React routing system.
 * Added navigation after authentication.
 * Integrated authentication with the rest of the frontend application.
-
----
-
-## What I Learned
-
-Through this work, I learned how to implement an authentication flow on the frontend and connect it to a backend. Instead of only creating the visual Login and Sign Up pages, we connected the forms to the backend, handled authentication tokens, and used the authentication state throughout the application.
-
-I also learned how `isAuthenticated` can be used to control both navigation and the UI. Routing was another important part of the implementation because users need to be able to move between the Login, Sign Up, and main application pages.
-
-Overall, this work gave me practical experience with React authentication, API communication, token handling, conditional rendering, and frontend routing.
