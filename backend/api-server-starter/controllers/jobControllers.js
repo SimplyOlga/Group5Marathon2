@@ -23,8 +23,14 @@ const createJob = async (req, res) => {
 
 const getJobById = async (req, res) => {
     const { id } = req.params;
+    // console.log("Job ID:", id); // Log the job ID for debugging
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        return res.status(400).json({ message: "Invalid job ID" });
+    }
     try{
-        const job = await Job.findOne({id});
+        const job = await Job.findOne({_id: id});
+        console.log(job)
+        res.status(200).json(job);
     }catch (error) {
         res.status(404).json({ messsage: "Failed to get job by ID"});
     }
@@ -32,13 +38,13 @@ const getJobById = async (req, res) => {
 
 
 const updateJob = async (req, res) => {
-    const { jobId } = req.params;
-    if (!mongoose.Types.ObjectId.isValid(tourId)) {
-        return res.status(400).json({ message: "Invalid tour ID" });
+    const { id } = req.params;
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        return res.status(400).json({ message: "Invalid job ID" });
     }
     try {
         const updatedJob = await Job.findByIdAndUpdate(
-            { _id: jobId},
+            { _id: id},
             { ...req.body },
             { new: true });
         
@@ -56,12 +62,14 @@ const updateJob = async (req, res) => {
 
 
 const deleteJob = async (req, res) => {
-const { jobId } = req.params;
-    if (!mongoose.Types.ObjectId.isValid(tourId)) {
-        return res.status(400).json({ message: "Invalid tour ID" });
+const { id } = req.params;
+    if (!mongoose.Types.ObjectId.isValid(jobId)) {
+        return res.status(400).json({ message: "Invalid job ID" });
     }
+    console.log("Deleting job with ID:", id); // Log the job ID for debugging
     try {
-        const deleteJob = await Job.findByIdAndDelete(jobId);
+        console.log("Deleting job with ID:", id); // Log the job ID for debugging
+        const deleteJob = await Job.findByIdAndDelete(id);
         
         if (!deleteJob) {
             return res.status(404).json({ message: "Job not found" });
