@@ -7,7 +7,7 @@ const Navbar = ({ isAuthenticated, setIsAuthenticated }) => {
     localStorage.removeItem("user");
   };
 
-  const linkClass = ({ isActive }) =>
+  const linkClass = ({isActive}) =>
     isActive
       ? 'bg-black text-white hover:bg-gray-900 hover:text-white rounded-md px-3 py-2'
       : 'text-white hover:bg-gray-900 hover:text-white rounded-md px-3 py-2';
@@ -23,6 +23,13 @@ const Navbar = ({ isAuthenticated, setIsAuthenticated }) => {
                 React Jobs
               </span>
             </NavLink>
+            {isAuthenticated && (
+                  <div className='flex space-x-2 text-white font-bold '>
+                    
+                    <span>{JSON.parse(localStorage.getItem("user"))?.email}</span>
+                    
+                  </div>
+                )}
             <div className='md:ml-auto'>
 
               <div className='flex space-x-2'>
@@ -35,15 +42,16 @@ const Navbar = ({ isAuthenticated, setIsAuthenticated }) => {
                 </NavLink>
                 
                 {isAuthenticated && (
-                  <div>
+                  <div className='flex space-x-2'>
                     <NavLink to='/add-job' className={linkClass}>Add Job</NavLink>
-                    <span>{JSON.parse(localStorage.getItem("user"))?.email}</span>
-                    <button onClick={handleClick}>Log out</button>
+                    <button className={'text-white hover:bg-gray-900 hover:text-white rounded-md px-3 py-2'} onClick={handleClick}>
+                  Log out
+                </button>
                   </div>
                 )}
 
                 {!isAuthenticated && (
-                  <div>
+                  <div className='flex space-x-2'>
                     <NavLink to='/login' className={linkClass}>
                       Login
                     </NavLink>
