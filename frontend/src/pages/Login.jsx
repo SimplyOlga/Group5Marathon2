@@ -2,22 +2,32 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
 function Login() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [message, setMessage] = useState('');
-  const navigate = useNavigate();
+    const navigate = useNavigate();
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [error, setError] = useState(null);
 
   async function handleSubmit(e) {
     e.preventDefault();
     setMessage('');
 
-    // try {
-    //   const { token, user } = await login(email.trim(), password);
-    //   navigate('/dashboard');
-    // } catch (err) {
-    //   setMessage(err.message || 'Invalid email or password.');
-    // }
-  }
+    const response = await fetch("/api/users/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+        });
+        const user = await response.json();
+
+        if (!response.ok) {
+        setError(user.error);
+        return;
+        }
+
+        localStorage.setItem("user", JSON.stringify(user));
+        setIsAuthenticated(true);
+        console.log("success");
+        navigate("/");
+    }
 
   return (
     <section className='bg-indigo-50'>
@@ -51,7 +61,7 @@ function Login() {
                         Password
                     </label>
                     <input
-                        type='text'
+                        type='password'
                         id='password'
                         name='password'
                         className='border rounded w-full py-2 px-3 mb-2'
@@ -62,12 +72,7 @@ function Login() {
                     />
                 </div>
 
-                {/* Error message */}
-                {message && (
-                  <p>
-                    {message}
-                  </p>
-                )}
+                {error && <p className="error">{error}</p>}
 
                 <button
                   type="submit"
