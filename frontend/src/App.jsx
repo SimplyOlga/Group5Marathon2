@@ -17,36 +17,48 @@ import Signup from './pages/SignUp'
 import { useState } from 'react';
 
 const App = () => {
+  const authHeaders = () => {
+    const user = JSON.parse(localStorage.getItem("user"));
+    return {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${user?.token}`,
+    };
+  };
+
+  const checkResponse = async (res) => {
+    if (!res.ok) {
+      const data = await res.json().catch(() => ({}));
+      throw new Error(data.error || data.message || 'Request failed');
+    }
+  };
+
   // Add New Job
   const addJob = async (newJob) => {
     const res = await fetch('/api/jobs', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      headers: authHeaders(),
       body: JSON.stringify(newJob),
     });
-    return;
+    await checkResponse(res);
   };
 
   // Delete Job
   const deleteJob = async (id) => {
     const res = await fetch(`/api/jobs/${id}`, {
       method: 'DELETE',
+      headers: authHeaders(),
     });
-    return;
+    await checkResponse(res);
   };
 
   // Update Job
   const updateJob = async (job) => {
     const res = await fetch(`/api/jobs/${job.id}`, {
       method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      headers: authHeaders(),
       body: JSON.stringify(job),
     });
-    return;
+    await checkResponse(res);
   };
 
   const [isAuthenticated, setIsAuthenticated] = useState(() => {
@@ -57,7 +69,15 @@ const App = () => {
   const router = createBrowserRouter(
     createRoutesFromElements(
       
-      <Route path='/' element={<MainLayout />}>
+      <Route
+        path='/'
+        element={
+          <MainLayout
+            isAuthenticated={isAuthenticated}
+            setIsAuthenticated={setIsAuthenticated}
+          />
+        }
+      >
         
         <Route index element={<HomePage />} />
         <Route path='/jobs' element={<JobsPage />} />
@@ -68,6 +88,7 @@ const App = () => {
           element={
             isAuthenticated ? <EditJobPage updateJobSubmit={updateJob}/> : <Navigate to="/login" />
           }
+          loader={jobLoader}
         />
         <Route
           path='/jobs/:id'

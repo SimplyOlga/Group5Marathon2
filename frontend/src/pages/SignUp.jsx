@@ -1,30 +1,37 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { Link } from 'react-router-dom';
-
-const SignUpPage = () => {
+const SignUpPage = ({ setIsAuthenticated }) => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [phoneNumber, setPhoneNumber ] = useState('');
-  const [gender, setGender] = useState('NotStated');
+  const [gender, setGender] = useState('Male');
   const [dateOfBirth, setDateOfBirth] = useState('');
   const [ street, setStreet] = useState('');
   const [ city, setCity ] = useState('');
   const [ zipcode, setZipcode ] = useState('');
-  
+  const [error, setError] = useState(null);
+
   const navigate = useNavigate();
 
-  
+
     async function handleSubmit(e) {
     e.preventDefault();
-    setMessage('');
+    setError(null);
 
     const response = await fetch("/api/users/signup", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email, password, phoneNumber, gender, dateOfBirth, street, city, zipcode }),
+        body: JSON.stringify({
+          name,
+          email,
+          password,
+          phone_number: phoneNumber,
+          gender,
+          date_of_birth: dateOfBirth,
+          address: { street, city, zipCode: zipcode },
+        }),
         });
         const user = await response.json();
 
@@ -90,7 +97,7 @@ const SignUpPage = () => {
                 Password
               </label>
               <input
-                type='text'
+                type='password'
                 id='password'
                 name='password'
                 className='border rounded w-full py-2 px-3 mb-2'
@@ -133,7 +140,7 @@ const SignUpPage = () => {
               >
                 <option value='Male'>Male</option>
                 <option value='Female'>Female</option>
-                <option value='NotSpecified'>Not specified</option>
+                <option value='Other'>Other</option>
                 
               </select>
             </div>
@@ -211,14 +218,14 @@ const SignUpPage = () => {
 
 
             
-            <div>
-              <Link to="/">
-                
-               
-              
-                Sign Up
-              </Link>
-            </div>
+            {error && <p className='text-red-500 mb-4'>{error}</p>}
+
+            <button
+              type='submit'
+              className='bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-4 rounded-full w-full focus:outline-none focus:shadow-outline'
+            >
+              Sign Up
+            </button>
           </form>
         </div>
       </div>
