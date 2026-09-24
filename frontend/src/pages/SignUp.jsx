@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
 
-const SignUpPage = ({ signupSubmit }) => {
+import { Link } from 'react-router-dom';
+
+const SignUpPage = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -13,30 +14,38 @@ const SignUpPage = ({ signupSubmit }) => {
   const [ city, setCity ] = useState('');
   const [ zipcode, setZipcode ] = useState('');
   
-
   const navigate = useNavigate();
 
-  const submitForm = (e) => {
+  
+    async function handleSubmit(e) {
     e.preventDefault();
+    setMessage('');
 
-    const newUser = {
-      name,
-      email,
-      password,
-    };
+    const response = await fetch("/api/users/signup", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, email, password, phoneNumber, gender, dateOfBirth, street, city, zipcode }),
+        });
+        const user = await response.json();
 
-    signupSubmit(newUser);
+        if (!response.ok) {
+        setError(user.error);
+        return;
+        }
 
-    toast.success('user Added Successfully');
+        localStorage.setItem("user", JSON.stringify(user));
+        setIsAuthenticated(true);
+        console.log("success");
+        navigate("/");
+    }
 
-    return navigate('/');
-  };
+ 
 
   return (
     <section className='bg-indigo-50'>
       <div className='container m-auto max-w-2xl py-24'>
         <div className='bg-white px-6 py-8 mb-4 shadow-md rounded-md border m-4 md:m-0'>
-          <form onSubmit={submitForm}>
+          <form onSubmit={handleSubmit}>
             <h2 className='text-3xl text-center font-semibold mb-6'>Sign Up</h2>
 
             
